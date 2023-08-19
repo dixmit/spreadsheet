@@ -15,6 +15,25 @@
     <t t-name="spreadsheet_oca.PivotPanel" owl="1">
         <PivotPanelDisplay pivotId="pivotId" pivotDefinition="pivotDefinition" />
     </t>
+    <t t-name="spreadsheet_oca.PivotAllPanel" owl="1">
+        <div
+            t-foreach="env.model.getters.getPivotIds()"
+            t-as="pivotId"
+            t-key="pivotId"
+            class="o_spreadsheet_oca_pivot"
+        >
+            <div class="spreadsheet_oca_pivot_label">
+                <span t-esc="env.model.getters.getPivotDisplayName(pivotId)" />
+                <i
+                    class="fa fa-cog btn btn-link text-muted spreadsheet_oca_filter_value_edit"
+                    t-on-click="() =&gt; this.onEditPivot(pivotId)"
+                />
+            </div>
+        </div>
+        <div class="o-sidePanelButtons">
+            <button t-on-click="() => this.onAddPivot()" class="btn">Add Pivot</button>
+        </div>
+    </t>
     <t t-name="spreadsheet_oca.PivotPanelDisplay" owl="1">
         <div class="o_spreadsheet_oca_datasource_panel">
             <div class="o_spreadsheet_oca_datasource_panel_field">

@@ -58,7 +58,7 @@ export class EditFilterPanel extends Component {
             defaultValue: this.props.filter.defaultValue,
             defaultsToCurrentPeriod: this.props.filter.defaultsToCurrentPeriod,
             rangeType: this.props.filter.rangeType || "year",
-            modelName: {technical: this.props.filter.modelName, label: null},
+            modelName: {technical: this.props.filter.modelName, label: ""},
             objects: {},
         });
         this.relativeDateRangeTypes = RELATIVE_DATE_RANGE_TYPES;
