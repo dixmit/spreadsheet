@@ -1,13 +1,13 @@
 /** @odoo-module */
 
-import { Domain } from "@web/core/domain";
-import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { useService } from "@web/core/utils/hooks";
+import {Domain} from "@web/core/domain";
+import {Many2OneField} from "@web/views/fields/many2one/many2one_field";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+import {useService} from "@web/core/utils/hooks";
 
-const { chartSidePanelComponentRegistry } = spreadsheet.registries;
-const { LineBarPieDesignPanel } = spreadsheet.components;
-const { Component } = owl;
+const {chartSidePanelComponentRegistry} = spreadsheet.registries;
+const {LineBarPieDesignPanel} = spreadsheet.components;
+const {Component} = owl;
 
 export class OdooPanel extends Component {
   setup() {
@@ -50,7 +50,7 @@ export class OdooPanel extends Component {
   }
 }
 OdooPanel.template = "spreadsheet_oca.OdooPanel";
-OdooPanel.components = { Many2OneField };
+OdooPanel.components = {Many2OneField};
 
 class OdooStackablePanel extends OdooPanel {
   onChangeStacked(ev) {

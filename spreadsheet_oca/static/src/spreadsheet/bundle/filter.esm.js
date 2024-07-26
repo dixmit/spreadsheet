@@ -1,20 +1,20 @@
 /** @odoo-module **/
 
-import { Component, onWillStart, useState } from "@odoo/owl";
-import { _lt, _t } from "web.core";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {_lt, _t} from "@web/core/l10n/translation";
 
-import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
-import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
-import { ModelSelector } from "@web/core/model_selector/model_selector";
-import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
-import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { useService } from "@web/core/utils/hooks";
+import {FilterValue} from "@spreadsheet/global_filters/components/filter_value/filter_value";
+import {ModelFieldSelector} from "@web/core/model_field_selector/model_field_selector";
+import {ModelSelector} from "@web/core/model_selector/model_selector";
+import {RELATIVE_DATE_RANGE_TYPES} from "@spreadsheet/helpers/constants";
+import {globalFiltersFieldMatchers} from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+import {useService} from "@web/core/utils/hooks";
 
-const { topbarMenuRegistry } = spreadsheet.registries;
+const {topbarMenuRegistry} = spreadsheet.registries;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
-topbarMenuRegistry.add("file", { name: _t("File"), sequence: 10 });
+topbarMenuRegistry.add("file", {name: _t("File"), sequence: 10});
 topbarMenuRegistry.addChild("filters", ["file"], {
   name: _t("Filters"),
   sequence: 70,
@@ -32,14 +32,14 @@ topbarMenuRegistry.addChild("download", ["file"], {
   action: (env) => env.downloadAsXLXS(),
 });
 
-const { sidePanelRegistry } = spreadsheet.registries;
+const {sidePanelRegistry} = spreadsheet.registries;
 
 export class FilterPanel extends Component {
   onEditFilter(filter) {
-    this.env.openSidePanel("EditFilterPanel", { filter });
+    this.env.openSidePanel("EditFilterPanel", {filter});
   }
   onAddFilter(type) {
-    this.env.openSidePanel("EditFilterPanel", { filter: { type: type } });
+    this.env.openSidePanel("EditFilterPanel", {filter: {type: type}});
   }
 }
 
@@ -63,7 +63,7 @@ export class EditFilterPanel extends Component {
       defaultValue: this.props.filter.defaultValue,
       defaultsToCurrentPeriod: this.props.filter.defaultsToCurrentPeriod,
       rangeType: this.props.filter.rangeType || "year",
-      modelName: { technical: this.props.filter.modelName, label: null },
+      modelName: {technical: this.props.filter.modelName, label: null},
       objects: {},
     });
     this.relativeDateRangeTypes = RELATIVE_DATE_RANGE_TYPES;
@@ -77,9 +77,7 @@ export class EditFilterPanel extends Component {
       this.state.modelName.label = modelLabel[0] && modelLabel[0].display_name;
     }
     var ModelFields = [];
-    for (var [objectType, objectClass] of Object.entries(
-      globalFiltersFieldMatchers
-    )) {
+    for (var [objectType, objectClass] of Object.entries(globalFiltersFieldMatchers)) {
       for (const objectId of objectClass.geIds()) {
         var fields = objectClass.getFields(objectId);
         this.state.objects[objectType + "_" + objectId] = {
@@ -107,26 +105,23 @@ export class EditFilterPanel extends Component {
   }
   get dateRangeTypes() {
     return [
-      { type: "year", description: _t("Year") },
-      { type: "quarter", description: _t("Quarter") },
-      { type: "month", description: _t("Month") },
-      { type: "relative", description: _t("Relative Period") },
+      {type: "year", description: _t("Year")},
+      {type: "quarter", description: _t("Quarter")},
+      {type: "month", description: _t("Month")},
+      {type: "relative", description: _t("Relative Period")},
     ];
   }
   get dateOffset() {
     return [
-      { value: 0, name: "" },
-      { value: -1, name: _lt("Previous") },
-      { value: -2, name: _lt("Before Previous") },
-      { value: 1, name: _lt("Next") },
-      { value: 2, name: _lt("After next") },
+      {value: 0, name: ""},
+      {value: -1, name: _lt("Previous")},
+      {value: -2, name: _lt("Before Previous")},
+      {value: 1, name: _lt("Next")},
+      {value: 2, name: _lt("After next")},
     ];
   }
   onChangeFieldMatchOffset(object, ev) {
-    this.state.objects[object.id].fieldMatch.offset = parseInt(
-      ev.target.value,
-      10
-    );
+    this.state.objects[object.id].fieldMatch.offset = parseInt(ev.target.value, 10);
   }
   onModelSelected(ev) {
     this.state.modelName.technical = ev.technical;
@@ -136,9 +131,7 @@ export class EditFilterPanel extends Component {
     this.state.rangeType = ev.target.value;
   }
   onSave() {
-    const action = this.props.filter.id
-      ? "EDIT_GLOBAL_FILTER"
-      : "ADD_GLOBAL_FILTER";
+    const action = this.props.filter.id ? "EDIT_GLOBAL_FILTER" : "ADD_GLOBAL_FILTER";
     this.env.openSidePanel("FilterPanel", {});
     var filter = {
       id: this.props.filter.id || uuidGenerator.uuidv4(),
@@ -152,7 +145,7 @@ export class EditFilterPanel extends Component {
     var filterMatching = {};
     Object.values(this.state.objects).forEach((object) => {
       filterMatching[object.type] = filterMatching[object.type] || {};
-      filterMatching[object.type][object.objectId] = { ...object.fieldMatch };
+      filterMatching[object.type][object.objectId] = {...object.fieldMatch};
     });
     this.env.model.dispatch(action, {
       id: filter.id,
@@ -179,7 +172,7 @@ export class EditFilterPanel extends Component {
 }
 
 EditFilterPanel.template = "spreadsheet_oca.EditFilterPanel";
-EditFilterPanel.components = { ModelSelector, ModelFieldSelector };
+EditFilterPanel.components = {ModelSelector, ModelFieldSelector};
 
 sidePanelRegistry.add("EditFilterPanel", {
   title: "Edit Filter",

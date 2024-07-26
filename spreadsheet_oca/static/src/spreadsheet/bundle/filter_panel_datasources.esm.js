@@ -1,18 +1,18 @@
 /** @odoo-module **/
 
-import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";
-import { Domain } from "@web/core/domain";
-import { DomainSelector } from "@web/core/domain_selector/domain_selector";
-import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
-import { _t } from "web.core";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { time_to_str } from "web.time";
-import { useService } from "@web/core/utils/hooks";
-import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
-import { makeDynamicRows } from "../utils/dynamic_row_generator.esm";
+import {Component, onWillStart, onWillUpdateProps} from "@odoo/owl";
+import {Domain} from "@web/core/domain";
+import {DomainSelector} from "@web/core/domain_selector/domain_selector";
+import {DomainSelectorDialog} from "@web/core/domain_selector_dialog/domain_selector_dialog";
+import {_t} from "@web/core/l10n/translation";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+import {formatDateTime} from "@web/core/l10n/dates";
+import {useService} from "@web/core/utils/hooks";
+import {FormViewDialog} from "@web/views/view_dialogs/form_view_dialog";
+import {makeDynamicRows} from "../utils/dynamic_row_generator.esm";
 
-const { sidePanelRegistry, topbarMenuRegistry } = spreadsheet.registries;
-const { createFullMenuItem } = spreadsheet.helpers;
+const {sidePanelRegistry, topbarMenuRegistry} = spreadsheet.registries;
+const {createFullMenuItem} = spreadsheet.helpers;
 
 topbarMenuRegistry.addChild("data_sources", ["data"], (env) => {
   const children = env.model.getters.getPivotIds().map((pivotId, index) =>
@@ -34,7 +34,7 @@ topbarMenuRegistry.addChild("data_sources", ["data"], (env) => {
       name: env.model.getters.getListDisplayName(listId),
       sequence: 1010,
       action: (child_env) => {
-        child_env.model.dispatch("SELECT_ODOO_LIST", { listId: listId });
+        child_env.model.dispatch("SELECT_ODOO_LIST", {listId: listId});
         child_env.openSidePanel("ListPanel", {});
       },
       icon: "fa fa-list",
@@ -87,7 +87,7 @@ export class PivotPanelDisplay extends Component {
   get lastUpdate() {
     const lastUpdate = this.PivotDataSource.lastUpdate;
     if (lastUpdate) {
-      return time_to_str(new Date(lastUpdate));
+      return formatDateTime(new Date(lastUpdate), {format: "HH:mm:ss"});
     }
     return _t("not updated");
   }
@@ -119,14 +119,14 @@ export class PivotPanelDisplay extends Component {
       sheetId: this.env.model.getters.getActiveSheetId(),
       table: tableStructure,
     });
-    this.env.model.dispatch("REFRESH_PIVOT", { id: this.props.pivotId });
+    this.env.model.dispatch("REFRESH_PIVOT", {id: this.props.pivotId});
   }
 
   async insertDynamicPivot() {
     const datasourceModel = await this.env.model.getters
       .getPivotDataSource(this.props.pivotId)
       .copyModelWithOriginalDomain();
-    var { cols, rows, measures } = datasourceModel.getTableStructure().export();
+    var {cols, rows, measures} = datasourceModel.getTableStructure().export();
     const number_of_rows = await new Promise((resolve) => {
       this.dialog.add(
         FormViewDialog,
@@ -137,7 +137,7 @@ export class PivotPanelDisplay extends Component {
             resolve(record.data.number_of_rows);
           },
         },
-        { onClose: () => resolve(false) }
+        {onClose: () => resolve(false)}
       );
     });
     if (!number_of_rows) {
@@ -164,7 +164,7 @@ export class PivotPanelDisplay extends Component {
       sheetId: this.env.model.getters.getActiveSheetId(),
       table,
     });
-    this.env.model.dispatch("REFRESH_PIVOT", { id: this.props.pivotId });
+    this.env.model.dispatch("REFRESH_PIVOT", {id: this.props.pivotId});
   }
 }
 
@@ -214,7 +214,7 @@ export class ListPanelDisplay extends Component {
   get lastUpdate() {
     const lastUpdate = this.ListDataSource.lastUpdate;
     if (lastUpdate) {
-      return time_to_str(new Date(lastUpdate));
+      return formatDateTime(new Date(lastUpdate), {format: "HH:mm:ss"});
     }
     return _t("not updated");
   }
