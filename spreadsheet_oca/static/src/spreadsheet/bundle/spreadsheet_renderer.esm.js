@@ -34,8 +34,8 @@ class SpreadsheetTransportService {
         payload.res_id === this.res_id
       ) {
         // What shall we do if no callback is defined (empty until onNewMessage...) :/
-        for (const {myCallback} of this.listeners) {
-          myCallback(payload);
+        for (const {callback} of this.listeners) {
+          callback(payload);
         }
       }
     }
@@ -68,7 +68,7 @@ export class SpreadsheetRenderer extends Component {
     this.spreadsheet_model = new Model(
       migrate(this.props.record.spreadsheet_raw),
       {
-        evalContext: {env: this.env, orm: this.orm},
+        custom: {env: this.env, orm: this.orm, dataSources},
         transportService: new SpreadsheetTransportService(
           this.orm,
           this.bus_service,
@@ -80,7 +80,6 @@ export class SpreadsheetRenderer extends Component {
           name: this.user.name,
         },
         mode: this.props.record.mode,
-        dataSources,
       },
       this.props.record.revisions
     );

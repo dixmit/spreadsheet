@@ -168,7 +168,7 @@ export class ActionSpreadsheetOca extends Component {
       },
       name: this.import_data.name,
     };
-    const dataSource = spreadsheet_model.config.dataSources.add(
+    const dataSource = spreadsheet_model.config.custom.dataSources.add(
       dataSourceId,
       ListDataSource,
       list_info
@@ -210,7 +210,7 @@ export class ActionSpreadsheetOca extends Component {
       searchParams: this.cleanSearchParams(),
       name: this.import_data.name,
     };
-    const dataSource = spreadsheet_model.config.dataSources.add(
+    const dataSource = spreadsheet_model.config.custom.dataSources.add(
       dataSourceId,
       PivotDataSource,
       pivot_info
