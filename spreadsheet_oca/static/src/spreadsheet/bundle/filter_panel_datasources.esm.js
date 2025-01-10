@@ -11,6 +11,7 @@ import {_t} from "@web/core/l10n/translation";
 import {formatDate} from "@web/core/l10n/dates";
 import {useService} from "@web/core/utils/hooks";
 
+const {DateTime} = luxon;
 const {sidePanelRegistry, topbarMenuRegistry} = spreadsheet.registries;
 
 topbarMenuRegistry.addChild("data_sources", ["data"], (env) => {
@@ -86,7 +87,7 @@ export class PivotPanelDisplay extends Component {
   get lastUpdate() {
     const lastUpdate = this.PivotDataSource.lastUpdate;
     if (lastUpdate) {
-      return formatDate(new Date(lastUpdate));
+      return formatDate(DateTime.fromMillis(lastUpdate));
     }
     return _t("not updated");
   }
@@ -231,7 +232,8 @@ export class ListPanelDisplay extends Component {
   get lastUpdate() {
     const lastUpdate = this.ListDataSource.lastUpdate;
     if (lastUpdate) {
-      return formatDate(new Date(lastUpdate));
+      console.log(lastUpdate);
+      return formatDate(DateTime.fromMillis(lastUpdate));
     }
     return _t("not updated");
   }

@@ -9,7 +9,7 @@ import {loadSpreadsheetDependencies} from "@spreadsheet/assets_backend/helpers";
 import {migrate} from "@spreadsheet/o_spreadsheet/migration";
 import {useService} from "@web/core/utils/hooks";
 import {useSetupAction} from "@web/webclient/actions/action_hook";
-import {waitForDataLoaded} from "@spreadsheet/actions/spreadsheet_download_action";
+import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 const {Spreadsheet, Model} = spreadsheet;
 const {useSubEnv, useState, onWillStart} = owl;

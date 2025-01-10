@@ -77,7 +77,7 @@ export class EditFilterPanel extends Component {
     }
     var ModelFields = [];
     for (var [objectType, objectClass] of Object.entries(globalFiltersFieldMatchers)) {
-      for (const objectId of objectClass.geIds()) {
+      for (const objectId of objectClass.getIds()) {
         var fields = objectClass.getFields(objectId);
         this.state.objects[objectType + "_" + objectId] = {
           id: objectType + "_" + objectId,
