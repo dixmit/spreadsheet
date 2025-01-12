@@ -2,9 +2,11 @@
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import {Component} from "@odoo/owl";
+import {ConfirmationDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 import {DataSources} from "@spreadsheet/data_sources/data_sources";
 import {Dialog} from "@web/core/dialog/dialog";
 import {Field} from "@web/views/fields/field";
+import {_t} from "@web/core/l10n/translation";
 import {loadSpreadsheetDependencies} from "@spreadsheet/assets_backend/helpers";
 import {migrate} from "@spreadsheet/o_spreadsheet/migration";
 import {useService} from "@web/core/utils/hooks";
@@ -12,7 +14,7 @@ import {useSetupAction} from "@web/webclient/actions/action_hook";
 import {waitForDataLoaded} from "@spreadsheet/helpers/model";
 
 const {Spreadsheet, Model} = spreadsheet;
-const {useSubEnv, useState, onWillStart} = owl;
+const {useSubEnv, onWillStart} = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 class SpreadsheetTransportService {
@@ -58,12 +60,8 @@ export class SpreadsheetRenderer extends Component {
     this.user = useService("user");
     this.ui = useService("ui");
     this.action = useService("action");
+    this.dialog = useService("dialog");
     const dataSources = new DataSources(this.env);
-    this.state = useState({
-      dialogDisplayed: false,
-      dialogTitle: "Spreadsheet",
-      dialogContent: undefined,
-    });
     this.confirmDialog = this.closeDialog;
     this.spreadsheet_model = new Model(
       migrate(this.props.record.spreadsheet_raw),
@@ -85,7 +83,6 @@ export class SpreadsheetRenderer extends Component {
     );
     useSubEnv({
       saveSpreadsheet: this.onSpreadsheetSaved.bind(this),
-      editText: this.editText.bind(this),
       askConfirmation: this.askConfirmation.bind(this),
       downloadAsXLXS: this.downloadAsXLXS.bind(this),
     });
@@ -102,34 +99,18 @@ export class SpreadsheetRenderer extends Component {
       this.spreadsheet_model.dispatch("EVALUATE_CELLS", {sheetId});
     });
   }
-  closeDialog() {
-    this.state.dialogDisplayed = false;
-    this.state.dialogTitle = "Spreadsheet";
-    this.state.dialogContent = undefined;
-    this.state.dialogHideInputBox = false;
-  }
   onSpreadsheetSaved() {
     const data = this.spreadsheet_model.exportData();
     this.env.saveRecord({spreadsheet_raw: data});
     this.spreadsheet_model.leaveSession();
   }
-  editText(title, myCallback, options) {
-    this.state.dialogContent = options.placeholder;
-    this.state.dialogTitle = title;
-    this.state.dialogDisplayed = true;
-    this.confirmDialog = () => {
-      myCallback(this.state.dialogContent);
-      this.closeDialog();
-    };
-  }
   askConfirmation(content, confirm) {
-    this.state.dialogContent = content;
-    this.state.dialogDisplayed = true;
-    this.state.dialogHideInputBox = true;
-    this.confirmDialog = () => {
-      confirm();
-      this.closeDialog();
-    };
+    this.dialog.add(ConfirmationDialog, {
+      title: _t("Odoo Spreadsheet"),
+      body: content,
+      confirm,
+      confirmLabel: _t("Confirm"),
+    });
   }
   async downloadAsXLXS() {
     this.ui.block();

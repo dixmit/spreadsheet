@@ -281,29 +281,6 @@
     </t>
     <t t-name="spreadsheet_oca.SpreadsheetRenderer" owl="1">
         <Spreadsheet model="spreadsheet_model" />
-        <Dialog
-      title="state.dialogTitle"
-      onClosed.bind="closeDialog"
-      t-if="state.dialogDisplayed"
-    >
-            <span t-if="state.dialogHideInputBox" t-esc="state.dialogContent" />
-            <input
-        t-else=""
-        type="text"
-        class="form-control"
-        t-model="state.dialogContent"
-      />
-            <t t-set-slot="buttons">
-                <button
-          class="btn btn-primary"
-          t-on-click="confirmDialog"
-        >Confirm</button>
-                <button
-          class="btn btn-secondary"
-          t-on-click="closeDialog"
-        >Cancel</button>
-            </t>
-        </Dialog>
     </t>
     <t t-name="spreadsheet_oca.SpreadsheetName" owl="1">
         <input
