@@ -1,11 +1,10 @@
 /** @odoo-module **/
+
 import {Component} from "@odoo/owl";
 import {FileUploader} from "@web/views/fields/file_handler";
 import {ListController} from "@web/views/list/list_controller";
-import {listView} from "@web/views/list/list_view";
-
 import {_t} from "@web/core/l10n/translation";
-
+import {listView} from "@web/views/list/list_view";
 import {registry} from "@web/core/registry";
 import {standardWidgetProps} from "@web/views/widgets/standard_widget_props";
 import {useService} from "@web/core/utils/hooks";

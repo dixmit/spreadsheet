@@ -591,40 +591,12 @@
                 </div>
             </div>
         </div>
-        <!--<div class="o_control_panel" t-ref="root">
-            <div t-if="display['top']" class="o_cp_top">
-                <div class="o_cp_top_left d-flex flex-grow-1 align-items-center">
-                    <t t-if="display['top-left']">
-                        <t t-slot="control-panel-breadcrumb">
-                            <t t-if="env.isSmall">
-                                <t
-                  t-call="spreadsheet_oca.Breadcrumbs.Small"
-                  t-if="!env.config.noBreadcrumbs"
-                />
-                            </t>
-                            <t t-else="">
-                                <t
-                  t-call="spreadsheet_oca.Breadcrumbs"
-                  t-if="!env.config.noBreadcrumbs"
-                />
-                            </t>
-                        </t>
-                    </t>
-                </div>
-            </div>
-        </div>-->
     </t>
     <t t-name="spreadsheet_oca.OdooPanel" owl="1">
         <div class="o-section">
             <div class="o-section-title">Link to Odoo menu</div>
             <div class="o-section-value">
-                <Many2OneField
-          value="menuId"
-          relation="'ir.ui.menu'"
-          record="record"
-          update.bind="updateMenu"
-          canOpen="false"
-        />
+                <Many2XAutocomplete t-props="menuProps" />
             </div>
         </div>
     </t>
@@ -659,13 +631,7 @@
             <div class="o-section">
                 <div class="o-section-title">Link to Odoo menu</div>
                 <div class="o-section-value">
-                    <Many2OneField
-            value="menuId"
-            relation="'ir.ui.menu'"
-            record="record"
-            update.bind="updateMenu"
-            canOpen="false"
-          />
+                    <Many2XAutocomplete t-props="menuProps" />
                 </div>
             </div>
         </xpath>
@@ -679,13 +645,7 @@
             <div class="o-section">
                 <div class="o-section-title">Link to Odoo menu</div>
                 <div class="o-section-value">
-                    <Many2OneField
-            value="menuId"
-            relation="'ir.ui.menu'"
-            record="record"
-            update.bind="updateMenu"
-            canOpen="false"
-          />
+                    <Many2XAutocomplete t-props="menuProps" />
                 </div>
             </div>
         </xpath>
@@ -699,13 +659,7 @@
             <div class="o-section">
                 <div class="o-section-title">Link to Odoo menu</div>
                 <div class="o-section-value">
-                    <Many2OneField
-            value="menuId"
-            relation="'ir.ui.menu'"
-            record="record"
-            update.bind="updateMenu"
-            canOpen="false"
-          />
+                    <Many2XAutocomplete t-props="menuProps" />
                 </div>
             </div>
         </xpath>
@@ -719,13 +673,7 @@
             <div class="o-section">
                 <div class="o-section-title">Link to Odoo menu</div>
                 <div class="o-section-value">
-                    <Many2OneField
-            value="menuId"
-            relation="'ir.ui.menu'"
-            record="record"
-            update.bind="updateMenu"
-            canOpen="false"
-          />
+                    <Many2XAutocomplete t-props="menuProps" />
                 </div>
             </div>
         </xpath>
@@ -739,13 +687,7 @@
             <div class="o-section">
                 <div class="o-section-title">Link to Odoo menu</div>
                 <div class="o-section-value">
-                    <Many2OneField
-            value="menuId"
-            relation="'ir.ui.menu'"
-            record="record"
-            update.bind="updateMenu"
-            canOpen="false"
-          />
+                    <Many2XAutocomplete t-props="menuProps" />
                 </div>
             </div>
         </xpath>
