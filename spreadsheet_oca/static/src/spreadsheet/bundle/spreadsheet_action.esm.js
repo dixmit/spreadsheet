@@ -17,6 +17,7 @@ export class ActionSpreadsheetOca extends Component {
   setup() {
     this.router = useService("router");
     this.orm = useService("orm");
+    this.noficiation = useService("notification");
     const params = this.props.action.params || this.props.action.context.params;
     this.spreadsheetId = params.spreadsheet_id;
     this.model = params.model || "spreadsheet.spreadsheet";
@@ -42,6 +43,13 @@ export class ActionSpreadsheetOca extends Component {
     useSubEnv({
       saveRecord: this.saveRecord.bind(this),
       importData: this.importData.bind(this),
+      notifyUser: this.notifyUser.bind(this),
+    });
+  }
+  notifyUser(notification) {
+    this.noficiation.add(notification.text, {
+      type: notification.type,
+      sticky: notification.sticky,
     });
   }
   async saveRecord(data) {
