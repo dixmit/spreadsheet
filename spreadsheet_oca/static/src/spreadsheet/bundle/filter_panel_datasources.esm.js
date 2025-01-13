@@ -94,10 +94,10 @@ export class PivotPanelDisplay extends Component {
   editDomain() {
     this.dialog.add(DomainSelectorDialog, {
       resModel: this.props.pivotDefinition.model,
-      initialValue: this.domain,
+      domain: this.domain,
       readonly: false,
       isDebugMode: Boolean(this.env.debug),
-      onSelected: this.onSelectDomain.bind(this),
+      onConfirm: this.onSelectDomain.bind(this),
     });
   }
   onSelectDomain(domain) {
@@ -232,7 +232,6 @@ export class ListPanelDisplay extends Component {
   get lastUpdate() {
     const lastUpdate = this.ListDataSource.lastUpdate;
     if (lastUpdate) {
-      console.log(lastUpdate);
       return formatDate(DateTime.fromMillis(lastUpdate));
     }
     return _t("not updated");
@@ -240,10 +239,10 @@ export class ListPanelDisplay extends Component {
   editDomain() {
     this.dialog.add(DomainSelectorDialog, {
       resModel: this.props.listDefinition.model,
-      initialValue: this.domain,
+      domain: this.domain,
       readonly: false,
       isDebugMode: Boolean(this.env.debug),
-      onSelected: this.onSelectDomain.bind(this),
+      onConfirm: this.onSelectDomain.bind(this),
     });
   }
   onSelectDomain(domain) {
