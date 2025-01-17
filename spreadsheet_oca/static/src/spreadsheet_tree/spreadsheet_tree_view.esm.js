@@ -24,7 +24,7 @@ class SpreadsheetFileUploader extends Component {
     const att_id = await this.orm.create("ir.attachment", [att_data], {
       context: this.env.searchModel.context,
     });
-    this.attachmentIdsToProcess.push(att_id);
+    this.attachmentIdsToProcess.push(att_id[0]);
   }
   async onUploadComplete() {
     let action = {};
