@@ -128,7 +128,9 @@ class SpreadsheetAbstract(models.AbstractModel):
                     ),
                 }
             )
-            self._bus_send("spreadsheet_oca", dict(message, id=self.id))
+            self._bus_send(
+                "notification", dict(message, id=self.id), subchannel="spreadsheet_oca"
+            )
             return True
         elif message["type"] == "SNAPSHOT":
             self._check_access_spreadsheet("write")
@@ -148,7 +150,9 @@ class SpreadsheetAbstract(models.AbstractModel):
             return True
         elif message["type"] in ["CLIENT_JOINED", "CLIENT_LEFT", "CLIENT_MOVED"]:
             self._check_access_spreadsheet("read")
-            self._bus_send("spreadsheet_oca", dict(message, id=self.id))
+            self._bus_send(
+                "notification", dict(message, id=self.id), subchannel="spreadsheet_oca"
+            )
             return True
         return False
 
